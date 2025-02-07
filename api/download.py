@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, send_file
 from yt_dlp import YoutubeDL
 import os
 import tempfile
+from vercel_wsgi import make_lambda_handler  # Required for Vercel
 
 app = Flask(__name__)
 
@@ -45,6 +46,5 @@ def download_video():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-# Required for Vercel
-def handler(event, context):
-    return app(event, context)
+# ✅ Required for Vercel
+handler = make_lambda_handler(app)
