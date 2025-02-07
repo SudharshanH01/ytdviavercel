@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from yt_dlp import YoutubeDL
+from vercel_wsgi import make_lambda_handler  # Required for Vercel
 
 app = Flask(__name__)
 
@@ -26,6 +27,5 @@ def get_thumbnail():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-# Required for Vercel
-def handler(event, context):
-    return app(event, context)
+# ✅ Required for Vercel
+handler = make_lambda_handler(app)
